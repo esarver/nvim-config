@@ -30,6 +30,9 @@ Plug 'rhysd/vim-clang-format'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
+" Semantic Language support (built-in LSP)
+Plug 'neovim/nvim-lspconfig'
+
 call plug#end()
 
 if has('nvim') 
