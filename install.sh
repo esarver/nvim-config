@@ -1,7 +1,43 @@
 #!/usr/bin/env bash
 
+print_help() {
+    cat << EOF
+ USAGE: $0 USER GROUP
+    USER:    The user that should own any newly created directories
+    GROUP:    The group that should own any newly created directories
+
+    INSTALLATION NOTES:
+       This script will run several steps using sudo.
+
+       This script will install the follow items from source:
+          - Neovim: /opt/neovim (built into /opt/neovim/release with symlink
+                    in /usr/local/bin)
+
+       This script will also install many other pieces of software using npm,
+       pip and the native package manager.
+EOF
+}
+
+if [[ $# -ne 2 ]]; then
+    print_help
+    exit 1
+fi
+
+USER="$1"
+GROUP="$2"
+
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 install "$SCRIPT_DIR/init.vim" -D --target-directory="$HOME/.config/nvim"
+
+install_nvim() {
+    sudo mkdir /opt/neovim
+    sudo chown "$USER:$GROUP" /opt/neovim
+    git clone https://github.com/neovim/neovim.git /opt/neovim
+    mkdir -p /opt/neovim/release
+    (cd /opt/neovim \
+        && make CMAKE_BUILD_TYPE=Release CMAKE_INSTALL_PREFIX=/opt/neovim/release install)
+    sudo ln -sf /opt/neovim/release/bin/nvim /usr/local/bin/
+}
 
 install_plug() {
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -16,7 +52,21 @@ native_packages() {
             npm \
             python3 \
             python3-pip \
-            clang-tools-extra
+            clang-tools-extra \
+	    ninja-build \
+	    libtool \
+	    autoconf \
+	    automake \
+	    cmake \
+	    gcc \
+	    gcc-c++ \
+	    make \
+	    pkgconfig \
+	    unzip \
+	    patch \
+	    gettext \
+	    ShellCheck
+	    curl
         echo "Installation of native packages complete!"
     elif apt-get --version &> /dev/null; then
         echo "apt not yet supported"
@@ -58,8 +108,9 @@ rust_install(){
     echo "Installation of rust packages complete!"
 }
 
-native_packages
-npm_install
-install_plug
-pip_install
-rust_install
+native_packages \
+    && install_nvim \
+    && npm_install \
+    && install_plug \
+    && pip_install \
+    && rust_install
