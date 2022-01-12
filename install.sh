@@ -108,9 +108,21 @@ rust_install(){
     echo "Installation of rust packages complete!"
 }
 
+lualsp_install() {
+    echo "Installing lua-lsp..."
+    sudo -p mkdir /opt/lua-lsp
+    sudo chown "$USER:$GROUP" /opt/lua-lsp
+    (cd /opt/lua-lsp \
+        && curl -L https://github.com/sumneko/lua-language-server/releases/download/2.5.6/lua-language-server-2.5.6-linux-x64.tar.gz | tar xzf - \
+        && sudo ln -sf /opt/lua-lsp/bin/lua-language-server /usr/local/bin/lua-language-server \
+    )
+    echo "Installation of lua-lsp complete!"
+}
+
 native_packages \
     && install_nvim \
     && npm_install \
     && install_plug \
     && pip_install \
-    && rust_install
+    && rust_install \
+    && lualsp_install

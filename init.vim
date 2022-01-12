@@ -344,14 +344,16 @@ autocmd BufRead *.orig set readonly
 
 " Follow Rust code style rules
 au Filetype rust set colorcolumn=100
+au Filetype python set colorcolumn=88
 
 " Help filetype detection
-autocmd BufRead *.plot set filetype=gnuplot
-autocmd BufRead *.md set filetype=markdown
-autocmd BufRead *.lds set filetype=ld
-autocmd BufRead *.tex set filetype=tex
-autocmd BufRead *.trm set filetype=c
-autocmd BufRead *.xlsx.axlsx set filetype=ruby
+autocmd BufRead,BufNewFile *.plot set filetype=gnuplot
+autocmd BufRead,BufNewFile *.md set filetype=markdown
+autocmd BufRead,BufNewFile *.lds set filetype=ld
+autocmd BufRead,BufNewFile *.tex set filetype=tex
+autocmd BufRead,BufNewFile *.trm set filetype=c
+autocmd BufRead,BufNewFile *.xlsx.axlsx set filetype=ruby
+autocmd BufRead,BufNewFile *.tsp set filetype=lua
 
 " Script plugins
 autocmd Filetype html,xml,xsl,php source ~/.config/nvim/scripts/closetag.vim
@@ -413,6 +415,8 @@ local servers = {
     -- install: pip install --user cmake-language-server
     'dockerls',
     -- install: sudo npm install -g dockerfile-language-server-nodejs
+    'sumneko_lua',
+    -- see project for installation details
     'pyright',
     -- install: pip install --user pyright
     'rust_analyzer',
