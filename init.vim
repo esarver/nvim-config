@@ -362,6 +362,10 @@ if has('nvim')
     runtime! plugin/python_setup.vim
 endif
 
+highlight Pmenu ctermfg=15 ctermbg=8
+highlight DiagnosticWarn ctermfg=11
+highlight DiagnosticError ctermfg=9
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " LSP Setup
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -402,6 +406,10 @@ local on_attach = function(client, bufnr)
 
 end
 
+LspDiagnosticFloatingError          = {fg=color1, bg=darkgray, style='bold'}
+LspDiagnosticFloatingWarning        = {fg=color2, bg=darkgray, style='bold'}
+LspDiagnosticFloatingInformation    = {fg=color3, bg=darkgray, style='bold'}
+LspDiagnosticFloatingHint           = {fg=color4, bg=darkgray, style='bold'}
 local container_cmd = {"podman", "run", "--rm", "-i", "esarver/assorted-lsp:latest"}
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
