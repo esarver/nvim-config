@@ -65,7 +65,7 @@ native_packages() {
 	    unzip \
 	    patch \
 	    gettext \
-	    ShellCheck
+	    ShellCheck \
 	    curl
         echo "Installation of native packages complete!"
     elif apt-get --version &> /dev/null; then
