@@ -110,7 +110,7 @@ rust_install(){
 
 lualsp_install() {
     echo "Installing lua-lsp..."
-    sudo -p mkdir /opt/lua-lsp
+    sudo mkdir -p /opt/lua-lsp
     sudo chown "$USER:$GROUP" /opt/lua-lsp
     (cd /opt/lua-lsp \
         && curl -L https://github.com/sumneko/lua-language-server/releases/download/2.5.6/lua-language-server-2.5.6-linux-x64.tar.gz | tar xzf - \
